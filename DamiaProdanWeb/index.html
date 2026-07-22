@@ -566,7 +566,7 @@ document.querySelectorAll('.snd').forEach(el=>{
 
 /* ---------- TWITCH EMBED (requiere dominio propio autorizado) ---------- */
 (function initTwitch(){
-  const parentDomain = "PARENT_DOMAIN"; // <-- reemplazar por tu dominio real, ej: "damiaprodan.com"
+  const parentDomain = "damiaprodan-oficial-rho.vercel.app"; // <-- reemplazar por tu dominio real, ej: "damiaprodan.com"
   if(parentDomain !== "PARENT_DOMAIN"){
     const wrap = document.getElementById('liveEmbedWrap');
     wrap.innerHTML = `<iframe src="https://player.twitch.tv/?channel=damiaprodan&parent=${parentDomain}&muted=true" allowfullscreen></iframe>`;

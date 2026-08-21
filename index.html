@@ -3,21 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<title>DamiaProdan | Streams en vivo, juegos y comunidad</title>
-<meta name="description" content="Todo DamiaProdan en un solo lugar: streams en vivo de Twitch, últimos videos de YouTube, top de juegos jugados y una comunidad que opina y califica cada partida. Sumate al Discord.">
-<link rel="canonical" href="https://damiaprodan-oficial-rho.vercel.app/">
-<meta name="robots" content="index, follow">
-
-<meta property="og:type" content="website">
-<meta property="og:title" content="DamiaProdan | Streams en vivo, juegos y comunidad">
-<meta property="og:description" content="Streams en vivo, últimos videos, top de juegos jugados y una comunidad que opina y califica. Todo en un solo lugar.">
-<meta property="og:url" content="https://damiaprodan-oficial-rho.vercel.app/">
-<meta property="og:locale" content="es_AR">
-
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="DamiaProdan | Streams en vivo, juegos y comunidad">
-<meta name="twitter:description" content="Streams en vivo, últimos videos, top de juegos jugados y una comunidad que opina y califica. Todo en un solo lugar.">
-<meta name="twitter:site" content="@XDamiaProdanX">
+<title>DamiaProdan — Vivo, juegos y comunidad</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
 <style>
@@ -200,11 +186,6 @@ h2{
 }
 .live-card h3{font-family:var(--font-mono);font-size:14px;color:var(--gold);margin-bottom:8px;}
 .live-card p{color:var(--text-dim);font-size:13px;line-height:1.5;}
-  .card-link{
-  color:var(--cyan);font-weight:600;display:inline-block;margin-top:6px;
-  border-bottom:1px solid transparent;transition:border-color .2s;
-}
-.card-link:hover{border-color:var(--cyan);}
 
 /* PLATFORMS */
 .plat-grid{
@@ -353,14 +334,6 @@ footer a:hover{color:var(--pink);}
 }
 .video-error a{color:var(--cyan);text-decoration:underline;}
 </style>
-<!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=AW-947553693"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-  gtag('config', 'AW-947553693');
-</script>
 </head>
 <body>
 <div class="scanlines"></div>
@@ -383,7 +356,11 @@ footer a:hover{color:var(--pink);}
   <h1 class="title">TODO<br>DAMIAPRODAN<br>EN UN LUGAR</h1>
   <p class="sub">Vivo, canales, juegos gratis y comunidad. Sin vueltas, sin pagar de más — posteá tu opinión sobre lo que jugamos y calificalo.</p>
   <div class="hero-ctas">
-<a class="btn btn-primary snd" href="https://www.twitch.tv/damiaprodan" target="_blank" rel="noopener" onclick="gtag('event', 'conversion', {'send_to': 'AW-947553693/s1ZtCPvtouIcEJ2L6sMD'});">▶ Ver en vivo</a>
+    <a class="btn btn-primary snd" href="https://www.twitch.tv/damiaprodan" target="_blank" rel="noopener">▶ Ver en vivo</a>
+    <a class="btn btn-outline snd" href="https://discord.com/invite/53fBDceMDf" target="_blank" rel="noopener">Unite al Discord</a>
+  </div>
+</section>
+
 <section id="vivo">
   <div class="section-head">
     <div class="section-num">01 — AHORA</div>
@@ -399,12 +376,12 @@ footer a:hover{color:var(--pink);}
     </div>
     <div class="live-side">
       <div class="live-card">
-        <h3>Esto es solo la punta del iceberg 👀</h3>
-        <p>Lo bueno pasa en mis canales: streams completos, clips exclusivos, sorteos y contenido que acá ni entra. <a class="card-link" href="#plataformas">Recorré todas mis plataformas →</a></p>
+        <h3>¿Cómo activo el embed?</h3>
+        <p>Buscá <code>PARENT_DOMAIN</code> en el HTML y reemplazalo por el dominio donde subas la web (ej: <code>damiaprodan.com</code>). Twitch solo embebe desde dominios autorizados.</p>
       </div>
       <div class="live-card">
-        <h3>¿Jugaste esto con nosotros? Contalo.</h3>
-        <p>Tu reseña define qué jugamos la próxima. Calificá, opiná y dejá tu marca en la comunidad. <a class="card-link" href="#juegos">Deja tu reseña en Juegos Jugados →</a></p>
+        <h3>Notificaciones</h3>
+        <p>Seguime en X para enterarte apenas arranco stream.</p>
       </div>
     </div>
   </div>
@@ -504,7 +481,7 @@ footer a:hover{color:var(--pink);}
 </div>
 
 <footer>
-  <div>© DamiaProdan — hecho con mucha energía</div>
+  <div>© DamiaProdan — hecha con mucha energía</div>
   <div>
     <a href="https://www.twitch.tv/damiaprodan" target="_blank">Twitch</a> ·
     <a href="https://www.youtube.com/@DamiaProdan" target="_blank">YouTube</a> ·
@@ -589,7 +566,7 @@ document.querySelectorAll('.snd').forEach(el=>{
 
 /* ---------- TWITCH EMBED (requiere dominio propio autorizado) ---------- */
 (function initTwitch(){
-  const parentDomain = "damiaprodan-oficial-rho.vercel.app"; // <-- reemplazar por tu dominio real, ej: "damiaprodan.com"
+  const parentDomain = "PARENT_DOMAIN"; // <-- reemplazar por tu dominio real, ej: "damiaprodan.com"
   if(parentDomain !== "PARENT_DOMAIN"){
     const wrap = document.getElementById('liveEmbedWrap');
     wrap.innerHTML = `<iframe src="https://player.twitch.tv/?channel=damiaprodan&parent=${parentDomain}&muted=true" allowfullscreen></iframe>`;

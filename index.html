@@ -1,0 +1,757 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>DamiaProdan — Vivo, juegos y comunidad</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#0d0716;
+  --bg-2:#160b28;
+  --panel:#1c1030;
+  --panel-border:#3a2a5c;
+  --pink:#ff2e88;
+  --cyan:#00e5ff;
+  --gold:#ffcc33;
+  --text:#f2eefc;
+  --text-dim:#a999c9;
+  --twitch:#9146ff;
+  --youtube:#ff3b3b;
+  --kick:#53fc18;
+  --trovo:#1cd3a2;
+  --x:#e8e8e8;
+  --discord:#5865f2;
+  --font-display:'Press Start 2P', monospace;
+  --font-body:'Space Grotesk', sans-serif;
+  --font-mono:'JetBrains Mono', monospace;
+}
+*{margin:0;padding:0;box-sizing:border-box;}
+html{scroll-behavior:smooth;}
+body{
+  background:
+    radial-gradient(circle at 15% 10%, rgba(255,46,136,0.12), transparent 40%),
+    radial-gradient(circle at 85% 30%, rgba(0,229,255,0.10), transparent 45%),
+    var(--bg);
+  color:var(--text);
+  font-family:var(--font-body);
+  overflow-x:hidden;
+  min-height:100vh;
+}
+::selection{background:var(--pink);color:#0d0716;}
+a{color:inherit;text-decoration:none;}
+
+/* scanline / noise overlay */
+.scanlines{
+  position:fixed;inset:0;pointer-events:none;z-index:999;
+  background:repeating-linear-gradient(0deg, rgba(255,255,255,0.02) 0px, rgba(255,255,255,0.02) 1px, transparent 1px, transparent 3px);
+  mix-blend-mode:overlay;
+}
+
+/* NAV */
+nav{
+  position:sticky;top:0;z-index:100;
+  display:flex;align-items:center;justify-content:space-between;
+  padding:18px 5vw;
+  background:rgba(13,7,22,0.75);
+  backdrop-filter:blur(10px);
+  border-bottom:1px solid var(--panel-border);
+}
+.logo{
+  font-family:var(--font-display);
+  font-size:14px;
+  color:var(--text);
+  letter-spacing:1px;
+}
+.logo span{color:var(--pink);}
+.nav-links{display:flex;gap:28px;align-items:center;}
+.nav-links a{
+  font-family:var(--font-mono);
+  font-size:13px;
+  color:var(--text-dim);
+  text-transform:uppercase;
+  letter-spacing:0.5px;
+  transition:color .2s;
+  position:relative;
+}
+.nav-links a:hover{color:var(--cyan);}
+.sound-toggle{
+  font-family:var(--font-mono);
+  font-size:12px;
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  color:var(--text);
+  padding:8px 14px;
+  border-radius:6px;
+  cursor:pointer;
+  display:flex;align-items:center;gap:8px;
+  transition:.2s;
+}
+.sound-toggle:hover{border-color:var(--cyan);color:var(--cyan);}
+.sound-toggle .dot{width:7px;height:7px;border-radius:50%;background:#555;}
+.sound-toggle.on .dot{background:var(--cyan);box-shadow:0 0 8px var(--cyan);}
+
+/* HERO */
+.hero{
+  min-height:88vh;
+  display:flex;flex-direction:column;align-items:flex-start;justify-content:center;
+  padding:0 5vw;
+  position:relative;
+}
+.eyebrow{
+  font-family:var(--font-mono);
+  color:var(--gold);
+  font-size:13px;
+  letter-spacing:3px;
+  margin-bottom:22px;
+  display:flex;align-items:center;gap:10px;
+}
+.eyebrow .pulse{
+  width:8px;height:8px;border-radius:50%;background:var(--pink);
+  animation:pulse 1.4s infinite;
+}
+@keyframes pulse{
+  0%{box-shadow:0 0 0 0 rgba(255,46,136,0.7);}
+  70%{box-shadow:0 0 0 10px rgba(255,46,136,0);}
+  100%{box-shadow:0 0 0 0 rgba(255,46,136,0);}
+}
+h1.title{
+  font-family:var(--font-display);
+  font-size:clamp(32px, 7vw, 84px);
+  line-height:1.15;
+  color:var(--text);
+  text-shadow:3px 3px 0 var(--pink), 6px 6px 0 var(--cyan);
+  animation:glitchIn .8s ease-out;
+}
+@keyframes glitchIn{
+  0%{opacity:0;transform:translateX(-20px);filter:blur(4px);}
+  100%{opacity:1;transform:translateX(0);filter:blur(0);}
+}
+.hero p.sub{
+  font-size:clamp(15px,2vw,20px);
+  color:var(--text-dim);
+  max-width:560px;
+  margin-top:24px;
+  line-height:1.6;
+}
+.hero-ctas{display:flex;gap:16px;margin-top:36px;flex-wrap:wrap;}
+.btn{
+  font-family:var(--font-mono);
+  font-weight:600;
+  font-size:14px;
+  padding:14px 26px;
+  border-radius:8px;
+  cursor:pointer;
+  border:2px solid transparent;
+  transition:transform .15s ease, box-shadow .15s ease;
+  display:inline-flex;align-items:center;gap:10px;
+}
+.btn:active{transform:scale(0.96);}
+.btn-primary{background:var(--pink);color:#fff;box-shadow:0 0 0 rgba(255,46,136,0);}
+.btn-primary:hover{box-shadow:0 6px 24px rgba(255,46,136,0.45);transform:translateY(-2px);}
+.btn-outline{border-color:var(--cyan);color:var(--cyan);background:transparent;}
+.btn-outline:hover{background:var(--cyan);color:#0d0716;transform:translateY(-2px);}
+
+section{padding:90px 5vw;position:relative;}
+.section-head{margin-bottom:44px;}
+.section-num{font-family:var(--font-mono);color:var(--pink);font-size:13px;letter-spacing:2px;}
+h2{
+  font-family:var(--font-display);
+  font-size:clamp(22px,3.4vw,38px);
+  margin-top:10px;
+  color:var(--text);
+}
+.section-desc{color:var(--text-dim);margin-top:12px;max-width:600px;font-size:15px;line-height:1.6;}
+
+/* LIVE */
+.live-wrap{
+  display:grid;grid-template-columns:1.6fr 1fr;gap:24px;
+}
+@media(max-width:860px){.live-wrap{grid-template-columns:1fr;}}
+.live-embed{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:14px;
+  overflow:hidden;aspect-ratio:16/9;position:relative;
+}
+.live-embed iframe{width:100%;height:100%;border:0;}
+.live-fallback{
+  position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:14px;
+  background:linear-gradient(160deg, #1c1030, #0d0716);
+  text-align:center;padding:20px;
+}
+.live-fallback p{color:var(--text-dim);font-size:13px;max-width:320px;font-family:var(--font-mono);}
+.live-side{display:flex;flex-direction:column;gap:16px;}
+.live-card{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:12px;padding:20px;
+}
+.live-card h3{font-family:var(--font-mono);font-size:14px;color:var(--gold);margin-bottom:8px;}
+.live-card p{color:var(--text-dim);font-size:13px;line-height:1.5;}
+
+/* PLATFORMS */
+.plat-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:18px;
+}
+.plat-card{
+  background:var(--panel);
+  border:1px solid var(--panel-border);
+  border-radius:14px;
+  padding:26px;
+  cursor:pointer;
+  position:relative;
+  overflow:hidden;
+  transition:transform .2s ease, border-color .2s ease;
+}
+.plat-card:hover{transform:translateY(-6px) rotate(-0.5deg);}
+.plat-card::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:4px;
+  background:var(--accent);
+}
+.plat-card .icon{font-size:26px;margin-bottom:14px;display:block;}
+.plat-card h3{font-family:var(--font-mono);font-size:16px;margin-bottom:6px;}
+.plat-card p{font-size:13px;color:var(--text-dim);}
+.plat-card .go{
+  margin-top:16px;font-family:var(--font-mono);font-size:12px;color:var(--accent);
+  display:flex;align-items:center;gap:6px;
+}
+.plat-card[data-p="twitch"]{--accent:var(--twitch);}
+.plat-card[data-p="youtube"]{--accent:var(--youtube);}
+.plat-card[data-p="kick"]{--accent:var(--kick);}
+.plat-card[data-p="trovo"]{--accent:var(--trovo);}
+.plat-card[data-p="x"]{--accent:var(--x);}
+.plat-card[data-p="discord"]{--accent:var(--discord);}
+.plat-card:hover{border-color:var(--accent);}
+
+/* COMMUNITY / POSTS */
+.post-form{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:14px;
+  padding:28px;margin-bottom:36px;
+}
+.post-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
+@media(max-width:640px){.post-form .row{grid-template-columns:1fr;}}
+.post-form input, .post-form textarea{
+  width:100%;background:var(--bg-2);border:1px solid var(--panel-border);color:var(--text);
+  padding:12px 14px;border-radius:8px;font-family:var(--font-body);font-size:14px;
+  transition:border-color .2s;
+}
+.post-form input:focus, .post-form textarea:focus{outline:none;border-color:var(--cyan);}
+.post-form textarea{min-height:90px;resize:vertical;margin-bottom:14px;}
+.stars{display:flex;gap:6px;margin-bottom:18px;}
+.star{font-size:26px;cursor:pointer;color:#463465;transition:color .15s, transform .1s;}
+.star:hover, .star.active{color:var(--gold);}
+.star:active{transform:scale(1.2);}
+
+.feed{display:flex;flex-direction:column;gap:14px;}
+.post-card{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:12px;
+  padding:20px 22px;
+  animation:cardIn .4s ease;
+}
+@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+.post-card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;}
+.post-card .name{font-family:var(--font-mono);color:var(--cyan);font-size:14px;}
+.post-card .game{font-family:var(--font-mono);color:var(--gold);font-size:12px;}
+.post-card .stars-view{color:var(--gold);font-size:14px;letter-spacing:2px;}
+.post-card .body{color:var(--text-dim);font-size:14px;line-height:1.6;}
+.empty-state{
+  text-align:center;padding:40px 20px;color:var(--text-dim);font-family:var(--font-mono);font-size:13px;
+  border:1px dashed var(--panel-border);border-radius:12px;
+}
+
+/* DISCORD CTA */
+.discord-band{
+  background:linear-gradient(120deg, rgba(88,101,242,0.18), rgba(255,46,136,0.10));
+  border:1px solid var(--discord);
+  border-radius:18px;
+  padding:50px 5vw;
+  text-align:center;
+  margin:0 5vw 90px;
+}
+.discord-band h2{color:var(--text);}
+.discord-band p{color:var(--text-dim);margin:14px 0 26px;}
+
+footer{
+  padding:40px 5vw;border-top:1px solid var(--panel-border);
+  display:flex;justify-content:space-between;flex-wrap:wrap;gap:16px;
+  font-family:var(--font-mono);font-size:12px;color:var(--text-dim);
+}
+footer a{color:var(--text-dim);transition:color .2s;}
+footer a:hover{color:var(--pink);}
+
+.toast{
+  position:fixed;bottom:24px;left:50%;transform:translateX(-50%) translateY(20px);
+  background:var(--panel);border:1px solid var(--cyan);color:var(--text);
+  padding:12px 20px;border-radius:10px;font-family:var(--font-mono);font-size:13px;
+  opacity:0;pointer-events:none;transition:.3s;z-index:1000;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+/* TOP JUEGOS */
+.rank-list{display:flex;flex-direction:column;gap:12px;}
+.rank-item{
+  display:flex;align-items:center;gap:20px;
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:12px;
+  padding:16px 22px;transition:transform .15s, border-color .15s;
+}
+.rank-item:hover{transform:translateX(6px);border-color:var(--gold);}
+.rank-item .num{
+  font-family:var(--font-display);font-size:20px;color:var(--gold);min-width:44px;
+}
+.rank-item .info{flex:1;}
+.rank-item .info h4{font-family:var(--font-mono);font-size:15px;margin-bottom:4px;}
+.rank-item .info p{font-size:13px;color:var(--text-dim);}
+.rank-item .bar-wrap{width:120px;height:6px;background:var(--bg-2);border-radius:4px;overflow:hidden;}
+.rank-item .bar{height:100%;background:linear-gradient(90deg,var(--pink),var(--gold));border-radius:4px;}
+.edit-note{
+  font-family:var(--font-mono);font-size:11px;color:var(--text-dim);opacity:.6;
+  margin-top:16px;border-top:1px dashed var(--panel-border);padding-top:12px;
+}
+
+/* VIDEOS GRID */
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:18px;}
+.video-card{
+  background:var(--panel);border:1px solid var(--panel-border);border-radius:12px;
+  overflow:hidden;cursor:pointer;transition:transform .2s, border-color .2s;
+  display:flex;flex-direction:column;
+}
+.video-card:hover{transform:translateY(-5px);border-color:var(--cyan);}
+.video-thumb{
+  width:100%;aspect-ratio:16/9;background:var(--bg-2);
+  background-size:cover;background-position:center;position:relative;
+}
+.video-thumb .play{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  background:rgba(13,7,22,0.25);opacity:0;transition:opacity .2s;font-size:30px;color:#fff;
+}
+.video-card:hover .video-thumb .play{opacity:1;}
+.video-info{padding:14px 16px;}
+.video-info h4{font-family:var(--font-mono);font-size:13px;line-height:1.4;margin-bottom:8px;
+  display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;}
+.video-info .meta{display:flex;justify-content:space-between;font-size:11px;color:var(--text-dim);}
+.video-info .meta .views{color:var(--gold);}
+.video-loading, .video-error{
+  grid-column:1/-1;text-align:center;padding:40px 20px;color:var(--text-dim);
+  font-family:var(--font-mono);font-size:13px;border:1px dashed var(--panel-border);border-radius:12px;
+}
+.video-error a{color:var(--cyan);text-decoration:underline;}
+</style>
+</head>
+<body>
+<div class="scanlines"></div>
+
+<nav>
+  <div class="logo">DAMIA<span>PRODAN</span></div>
+  <div class="nav-links">
+    <a href="#vivo">Vivo</a>
+    <a href="#plataformas">Plataformas</a>
+    <a href="#top-juegos">Top juegos</a>
+    <a href="#ultimos-videos">Videos</a>
+    <a href="#juegos">Comunidad</a>
+    <a href="#discord">Discord</a>
+    <button class="sound-toggle" id="soundToggle"><span class="dot"></span> <span id="soundLabel">Sonido off</span></button>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="eyebrow"><span class="pulse"></span> STREAMER · GAMER · ARGENTINA</div>
+  <h1 class="title">TODO<br>DAMIAPRODAN<br>EN UN LUGAR</h1>
+  <p class="sub">Vivo, canales, juegos gratis y comunidad. Sin vueltas, sin pagar de más — posteá tu opinión sobre lo que jugamos y calificalo.</p>
+  <div class="hero-ctas">
+    <a class="btn btn-primary snd" href="https://www.twitch.tv/damiaprodan" target="_blank" rel="noopener">▶ Ver en vivo</a>
+    <a class="btn btn-outline snd" href="https://discord.com/invite/53fBDceMDf" target="_blank" rel="noopener">Unite al Discord</a>
+  </div>
+</section>
+
+<section id="vivo">
+  <div class="section-head">
+    <div class="section-num">01 — AHORA</div>
+    <h2>En vivo en Twitch</h2>
+    <p class="section-desc">Embed directo del canal. Si estás viendo esto desde tu propio dominio, acordate de cambiar el parámetro <code>parent</code> del iframe por tu dominio real, sino Twitch no lo deja cargar.</p>
+  </div>
+  <div class="live-wrap">
+    <div class="live-embed" id="liveEmbedWrap">
+      <div class="live-fallback" id="liveFallback">
+        <p>El embed se activa apenas cargues esta página desde un dominio propio (Twitch exige un <b>parent</b> autorizado). Mientras tanto, mirá el stream directo:</p>
+        <a class="btn btn-primary snd" href="https://www.twitch.tv/damiaprodan" target="_blank" rel="noopener">▶ Ir a Twitch</a>
+      </div>
+    </div>
+    <div class="live-side">
+      <div class="live-card">
+        <h3>¿Cómo activo el embed?</h3>
+        <p>Buscá <code>PARENT_DOMAIN</code> en el HTML y reemplazalo por el dominio donde subas la web (ej: <code>damiaprodan.com</code>). Twitch solo embebe desde dominios autorizados.</p>
+      </div>
+      <div class="live-card">
+        <h3>Notificaciones</h3>
+        <p>Seguime en X para enterarte apenas arranco stream.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section id="plataformas">
+  <div class="section-head">
+    <div class="section-num">02 — CANALES</div>
+    <h2>Encontrame en todos lados</h2>
+    <p class="section-desc">Cada botón te lleva directo al canal correspondiente.</p>
+  </div>
+  <div class="plat-grid">
+    <a class="plat-card snd" data-p="twitch" href="https://www.twitch.tv/damiaprodan" target="_blank" rel="noopener">
+      <span class="icon">🟣</span><h3>Twitch</h3><p>Streams en vivo, charla y juegos.</p><span class="go">Ir al canal →</span>
+    </a>
+    <a class="plat-card snd" data-p="youtube" href="https://www.youtube.com/@DamiaProdan" target="_blank" rel="noopener">
+      <span class="icon">▶️</span><h3>YouTube</h3><p>Highlights, resúmenes y videos completos.</p><span class="go">Ir al canal →</span>
+    </a>
+    <a class="plat-card snd" data-p="kick" href="https://kick.com/damiaprodan" target="_blank" rel="noopener">
+      <span class="icon">🟢</span><h3>Kick</h3><p>Streams alternativos.</p><span class="go">Ir al canal →</span>
+    </a>
+    <a class="plat-card snd" data-p="trovo" href="https://trovo.live/s/DamiaProdan" target="_blank" rel="noopener">
+      <span class="icon">🔷</span><h3>Trovo</h3><p>Más streams, más comunidad.</p><span class="go">Ir al canal →</span>
+    </a>
+    <a class="plat-card snd" data-p="x" href="https://x.com/XDamiaProdanX" target="_blank" rel="noopener">
+      <span class="icon">✖️</span><h3>X</h3><p>Novedades y avisos de stream.</p><span class="go">Ir al canal →</span>
+    </a>
+    <a class="plat-card snd" data-p="discord" href="https://discord.com/invite/53fBDceMDf" target="_blank" rel="noopener">
+      <span class="icon">💬</span><h3>Discord</h3><p>La comunidad, todo el día.</p><span class="go">Unirme →</span>
+    </a>
+  </div>
+</section>
+
+<section id="top-juegos">
+  <div class="section-head">
+    <div class="section-num">03 — RANKING</div>
+    <h2>Top juegos jugados en stream</h2>
+    <p class="section-desc">Los juegos que más dieron que hablar en el canal, ordenados por lo que más enganchó a la comunidad.</p>
+  </div>
+  <div class="rank-list" id="topGamesList"></div>
+  <p class="edit-note">Esta lista la actualizás vos a mano: buscá <code>TOP_GAMES</code> en el código y editá el array — no hay forma de calcularla en automático porque depende de tu criterio (o de encuestas a tu comunidad), no de un dato público.</p>
+</section>
+
+<section id="top-videos">
+  <div class="section-head">
+    <div class="section-num">04 — RANKING</div>
+    <h2>Top videos más vistos</h2>
+    <p class="section-desc">Tus videos con más repercusión en YouTube. Click para verlos directo en YouTube.</p>
+  </div>
+  <div class="video-grid" id="topVideosGrid"></div>
+  <p class="edit-note">Se actualiza solo una vez que despliegues el backend de <code>api/top-videos.js</code> (instrucciones en <code>README-backend.md</code>). Hasta entonces, muestra una lista de ejemplo que podés editar a mano en <code>TOP_VIDEOS</code>.</p>
+</section>
+
+<section id="ultimos-videos">
+  <div class="section-head">
+    <div class="section-num">05 — EN VIVO DESDE YOUTUBE</div>
+    <h2>Últimos videos</h2>
+    <p class="section-desc">Del más reciente al más viejo, traídos directo del feed público de tu canal.</p>
+  </div>
+  <div class="video-grid" id="latestVideosGrid">
+    <div class="video-loading">Cargando últimos videos...</div>
+  </div>
+</section>
+
+<section id="juegos">
+  <div class="section-head">
+    <div class="section-num">06 — COMUNIDAD</div>
+    <h2>Juegos jugados: opiná y calificá</h2>
+    <p class="section-desc">Posteá qué te pareció algún juego que jugamos en stream. Queda visible para todos.</p>
+  </div>
+
+  <div class="post-form">
+    <div class="row">
+      <input type="text" id="fName" placeholder="Tu nombre" maxlength="30">
+      <input type="text" id="fGame" placeholder="Juego (ej: Elden Ring)" maxlength="40">
+    </div>
+    <textarea id="fBody" placeholder="Tu opinión sobre el juego / el stream..." maxlength="400"></textarea>
+    <div class="stars" id="starPicker">
+      <span class="star" data-v="1">★</span>
+      <span class="star" data-v="2">★</span>
+      <span class="star" data-v="3">★</span>
+      <span class="star" data-v="4">★</span>
+      <span class="star" data-v="5">★</span>
+    </div>
+    <button class="btn btn-primary snd" id="submitPost">Postear reseña</button>
+  </div>
+
+  <div class="feed" id="feed">
+    <div class="empty-state">Cargando reseñas...</div>
+  </div>
+</section>
+
+<div class="discord-band" id="discord">
+  <h2>Sumate al Discord</h2>
+  <p>Charla en vivo, avisos de stream y la comunidad completa.</p>
+  <a class="btn btn-primary snd" href="https://discord.com/invite/53fBDceMDf" target="_blank" rel="noopener">💬 Entrar al Discord</a>
+</div>
+
+<footer>
+  <div>© DamiaProdan — hecha con mucha energía</div>
+  <div>
+    <a href="https://www.twitch.tv/damiaprodan" target="_blank">Twitch</a> ·
+    <a href="https://www.youtube.com/@DamiaProdan" target="_blank">YouTube</a> ·
+    <a href="https://kick.com/damiaprodan" target="_blank">Kick</a> ·
+    <a href="https://trovo.live/s/DamiaProdan" target="_blank">Trovo</a> ·
+    <a href="https://x.com/XDamiaProdanX" target="_blank">X</a> ·
+    <a href="https://discord.com/invite/53fBDceMDf" target="_blank">Discord</a>
+  </div>
+</footer>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ---------- SONIDO (Web Audio API, sin archivos externos) ---------- */
+let actx = null;
+let musicOn = false;
+let musicNodes = null;
+
+function getCtx(){
+  if(!actx){ actx = new (window.AudioContext || window.webkitAudioContext)(); }
+  return actx;
+}
+
+function playClick(freq=880){
+  try{
+    const ctx = getCtx();
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = 'square';
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.06, ctx.currentTime);
+    gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.12);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start();
+    osc.stop(ctx.currentTime + 0.13);
+  }catch(e){}
+}
+
+function startMusic(){
+  try{
+    const ctx = getCtx();
+    const master = ctx.createGain();
+    master.gain.value = 0.035;
+    master.connect(ctx.destination);
+    const notes = [196.00, 233.08, 261.63, 293.66, 261.63, 233.08]; // arpeggio energico
+    let i = 0;
+    const interval = setInterval(()=>{
+      if(!musicOn){ clearInterval(interval); return; }
+      const osc = ctx.createOscillator();
+      const g = ctx.createGain();
+      osc.type = 'triangle';
+      osc.frequency.value = notes[i % notes.length];
+      g.gain.setValueAtTime(0.0001, ctx.currentTime);
+      g.gain.linearRampToValueAtTime(0.05, ctx.currentTime + 0.05);
+      g.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 0.35);
+      osc.connect(g).connect(master);
+      osc.start();
+      osc.stop(ctx.currentTime + 0.4);
+      i++;
+    }, 260);
+    musicNodes = { master, interval };
+  }catch(e){}
+}
+
+function stopMusic(){
+  if(musicNodes && musicNodes.interval){ clearInterval(musicNodes.interval); }
+  musicNodes = null;
+}
+
+const soundToggle = document.getElementById('soundToggle');
+const soundLabel = document.getElementById('soundLabel');
+soundToggle.addEventListener('click', ()=>{
+  musicOn = !musicOn;
+  soundToggle.classList.toggle('on', musicOn);
+  soundLabel.textContent = musicOn ? 'Sonido on' : 'Sonido off';
+  if(musicOn){ startMusic(); } else { stopMusic(); }
+});
+
+document.querySelectorAll('.snd').forEach(el=>{
+  el.addEventListener('click', ()=> playClick(700 + Math.random()*300));
+});
+
+/* ---------- TWITCH EMBED (requiere dominio propio autorizado) ---------- */
+(function initTwitch(){
+  const parentDomain = "PARENT_DOMAIN"; // <-- reemplazar por tu dominio real, ej: "damiaprodan.com"
+  if(parentDomain !== "PARENT_DOMAIN"){
+    const wrap = document.getElementById('liveEmbedWrap');
+    wrap.innerHTML = `<iframe src="https://player.twitch.tv/?channel=damiaprodan&parent=${parentDomain}&muted=true" allowfullscreen></iframe>`;
+  }
+})();
+
+/* ---------- SISTEMA DE POSTEOS (persistente, compartido) ---------- */
+const feedEl = document.getElementById('feed');
+const starPicker = document.getElementById('starPicker');
+let selectedStars = 0;
+
+starPicker.querySelectorAll('.star').forEach(star=>{
+  star.addEventListener('click', ()=>{
+    selectedStars = parseInt(star.dataset.v);
+    starPicker.querySelectorAll('.star').forEach(s=>{
+      s.classList.toggle('active', parseInt(s.dataset.v) <= selectedStars);
+    });
+    playClick(1000);
+  });
+});
+
+function showToast(msg){
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.classList.add('show');
+  setTimeout(()=> t.classList.remove('show'), 2200);
+}
+
+function renderPosts(posts){
+  if(!posts || posts.length === 0){
+    feedEl.innerHTML = '<div class="empty-state">Todavía no hay reseñas. ¡Sé el primero en postear!</div>';
+    return;
+  }
+  feedEl.innerHTML = posts.slice().reverse().map(p => `
+    <div class="post-card">
+      <div class="top">
+        <span class="name">${escapeHtml(p.name)}</span>
+        <span class="game">${escapeHtml(p.game)}</span>
+        <span class="stars-view">${'★'.repeat(p.stars)}${'☆'.repeat(5-p.stars)}</span>
+      </div>
+      <div class="body">${escapeHtml(p.body)}</div>
+    </div>
+  `).join('');
+}
+
+function escapeHtml(str){
+  const d = document.createElement('div');
+  d.textContent = str;
+  return d.innerHTML;
+}
+
+async function loadPosts(){
+  try{
+    const result = await window.storage.get('posts:list', true);
+    const posts = result ? JSON.parse(result.value) : [];
+    renderPosts(posts);
+    return posts;
+  }catch(e){
+    renderPosts([]);
+    return [];
+  }
+}
+
+document.getElementById('submitPost').addEventListener('click', async ()=>{
+  const name = document.getElementById('fName').value.trim() || 'Anónimo';
+  const game = document.getElementById('fGame').value.trim();
+  const body = document.getElementById('fBody').value.trim();
+
+  if(!game || !body || selectedStars === 0){
+    showToast('Completá juego, opinión y calificación ⭐');
+    return;
+  }
+
+  playClick(1200);
+
+  try{
+    const current = await loadPosts();
+    const newPost = { name, game, body, stars: selectedStars, ts: Date.now() };
+    const updated = [...current, newPost];
+    await window.storage.set('posts:list', JSON.stringify(updated), true);
+    renderPosts(updated);
+    document.getElementById('fName').value = '';
+    document.getElementById('fGame').value = '';
+    document.getElementById('fBody').value = '';
+    selectedStars = 0;
+    starPicker.querySelectorAll('.star').forEach(s=> s.classList.remove('active'));
+    showToast('¡Reseña posteada!');
+  }catch(e){
+    showToast('Error al postear, intentá de nuevo');
+  }
+});
+
+loadPosts();
+
+/* ---------- TOP JUEGOS (editable a mano) ---------- */
+const TOP_GAMES = [
+  { name: "Elden Ring", note: "El que más horas de stream se llevó", score: 100 },
+  { name: "Fortnite", note: "Clásico infaltable de la comunidad", score: 88 },
+  { name: "Minecraft", note: "Building sessions con la gente del chat", score: 76 },
+  { name: "Valorant", note: "Rankeds los domingos", score: 64 },
+  { name: "GTA V RP", note: "Roleplay con más caos que trama", score: 55 },
+];
+
+function renderTopGames(){
+  const el = document.getElementById('topGamesList');
+  el.innerHTML = TOP_GAMES.map((g, i) => `
+    <div class="rank-item">
+      <span class="num">${String(i+1).padStart(2,'0')}</span>
+      <div class="info">
+        <h4>${escapeHtml(g.name)}</h4>
+        <p>${escapeHtml(g.note)}</p>
+      </div>
+      <div class="bar-wrap"><div class="bar" style="width:${g.score}%"></div></div>
+    </div>
+  `).join('');
+}
+renderTopGames();
+
+/* ---------- TOP VIDEOS MÁS VISTOS ---------- */
+// Lista manual de respaldo (se usa si el backend de /api/top-videos todavía no está desplegado)
+const TOP_VIDEOS = [
+  { title: "Reemplazá esto con tu video más visto", url: "https://www.youtube.com/@DamiaProdan", thumb: "", views: "—" },
+  { title: "Segundo video más visto", url: "https://www.youtube.com/@DamiaProdan", thumb: "", views: "—" },
+  { title: "Tercer video más visto", url: "https://www.youtube.com/@DamiaProdan", thumb: "", views: "—" },
+];
+
+function renderTopVideos(videos, isLive){
+  const el = document.getElementById('topVideosGrid');
+  el.innerHTML = videos.map(v => `
+    <a class="video-card snd" href="${v.url}" target="_blank" rel="noopener">
+      <div class="video-thumb" style="background-image:url('${v.thumb}')"><span class="play">▶</span></div>
+      <div class="video-info">
+        <h4>${escapeHtml(v.title)}</h4>
+        <div class="meta"><span class="views">${typeof v.views === 'number' ? v.views.toLocaleString('es-AR') : v.views} vistas</span><span>YouTube ↗</span></div>
+      </div>
+    </a>
+  `).join('');
+  if(!isLive){
+    el.insertAdjacentHTML('beforeend', `<div class="video-loading" style="grid-column:1/-1;">Esta lista es manual todavía — seguí las instrucciones de README-backend.md para que se actualice sola.</div>`);
+  }
+}
+
+async function loadTopVideos(){
+  try{
+    const res = await fetch('/api/top-videos');
+    if(!res.ok) throw new Error('backend no disponible');
+    const data = await res.json();
+    if(!data.videos || data.videos.length === 0) throw new Error('sin videos');
+    renderTopVideos(data.videos, true);
+  }catch(e){
+    // El backend todavía no está desplegado (o falló) -> usamos la lista manual
+    renderTopVideos(TOP_VIDEOS, false);
+  }
+}
+loadTopVideos();
+
+/* ---------- ÚLTIMOS VIDEOS (en vivo desde el feed RSS público de YouTube) ---------- */
+const YT_CHANNEL_ID = "UCpfI9tPbATkfMwW4IktVZUw"; // canal de DamiaProdan
+async function loadLatestVideos(){
+  const grid = document.getElementById('latestVideosGrid');
+  const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
+  const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
+  try{
+    const res = await fetch(proxyUrl);
+    if(!res.ok) throw new Error('bad response');
+    const data = await res.json();
+    if(!data.items || data.items.length === 0) throw new Error('sin videos');
+    const items = data.items.slice(0, 12); // ya vienen del más nuevo al más viejo
+    grid.innerHTML = items.map(v => {
+      const thumb = (v.thumbnail) || '';
+      const date = new Date(v.pubDate).toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
+      return `
+        <a class="video-card snd" href="${v.link}" target="_blank" rel="noopener">
+          <div class="video-thumb" style="background-image:url('${thumb}')"><span class="play">▶</span></div>
+          <div class="video-info">
+            <h4>${escapeHtml(v.title)}</h4>
+            <div class="meta"><span>${date}</span><span>YouTube ↗</span></div>
+          </div>
+        </a>`;
+    }).join('');
+  }catch(e){
+    grid.innerHTML = `<div class="video-error">No se pudo traer el feed en vivo ahora mismo (puede ser un límite del proxy gratuito). Mirá los últimos videos directo en <a href="https://www.youtube.com/@DamiaProdan" target="_blank" rel="noopener">YouTube</a>.</div>`;
+  }
+}
+loadLatestVideos();
+</script>
+</body>
+</html>

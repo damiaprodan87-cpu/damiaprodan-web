@@ -775,6 +775,56 @@ async function loadLatestVideos(){
   }
 }
 loadLatestVideos();
+<script>
+  // Cargar reseñas guardadas al entrar a la página
+  async function loadReviews() {
+    try {
+      const res = await fetch('/api/reviews');
+      const reviews = await res.json();
+      
+      if (Array.isArray(reviews) && reviews.length > 0) {
+        const container = document.querySelector('.reviews-list') || document.getElementById('reviews-container');
+        if (container) {
+          container.innerHTML = reviews.map(r => `
+            <div class="review-card">
+              <strong>${r.author}</strong> - <span>${r.game}</span> (${'★'.repeat(r.rating)})
+              <p>${r.comment}</p>
+            </div>
+          `).join('');
+        }
+      }
+    } catch (err) {
+      console.error('Error al cargar reseñas:', err);
+    }
+  }
+
+  // Enviar la reseña cuando hacen clic en "Postear reseña"
+  document.addEventListener('DOMContentLoaded', () => {
+    loadReviews();
+
+    const form = document.querySelector('form') || document.querySelector('.review-form');
+    if (form) {
+      form.addEventListener('submit', async (e) => {
+        e.preventDefault();
+
+        const author = form.querySelector('[name="author"]')?.value;
+        const game = form.querySelector('[name="game"]')?.value;
+        const comment = form.querySelector('[name="comment"]')?.value;
+        const rating = 5; // Cambiá según tu selector de estrellas
+
+        const res = await fetch('/api/reviews', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ author, game, comment, rating })
+        });
+
+        if (res.ok) {
+          form.reset();
+          loadReviews(); // Actualiza la lista sin recargar la página
+        }
+      });
+    }
+  });
 </script>
 </body>
 </html>

@@ -37,7 +37,7 @@
     nav {
       position: sticky; top: 0; z-index: 100;
       display: flex; align-items: center; justify-content: space-between;
-      padding: 18px 5vw; background: rgba(13,7,22,0.75); backdrop-filter: blur(10px);
+      padding: 18px 5vw; background: rgba(13,7,22,0.85); backdrop-filter: blur(10px);
       border-bottom: 1px solid var(--panel-border);
     }
     .logo { font-family: var(--font-display); font-size: 14px; color: var(--text); letter-spacing: 1px; }
@@ -45,26 +45,28 @@
     .nav-links { display: flex; gap: 28px; align-items: center; }
     .nav-links a { font-family: var(--font-mono); font-size: 13px; color: var(--text-dim); text-transform: uppercase; transition: color .2s; }
     .nav-links a:hover { color: var(--cyan); }
-    section { padding: 90px 5vw; position: relative; }
-    .section-head { margin-bottom: 44px; }
+    section { padding: 80px 5vw; position: relative; max-width: 1300px; margin: 0 auto; }
+    .section-head { margin-bottom: 36px; }
     .section-num { font-family: var(--font-mono); color: var(--pink); font-size: 13px; letter-spacing: 2px; }
-    h2 { font-family: var(--font-display); font-size: clamp(22px,3.4vw,38px); margin-top: 10px; color: var(--text); }
-    .section-desc { color: var(--text-dim); margin-top: 12px; max-width: 600px; font-size: 15px; line-height: 1.6; }
-    .hero { min-height: 50vh; display: flex; flex-direction: column; justify-content: center; padding: 60px 5vw 0; }
-    h1.title { font-family: var(--font-display); font-size: clamp(32px, 6vw, 70px); color: var(--text); text-shadow: 3px 3px 0 var(--pink), 6px 6px 0 var(--cyan); }
-    .hero p.sub { font-size: 18px; color: var(--text-dim); max-width: 560px; margin-top: 20px; }
-    .post-form { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; padding: 28px; margin-bottom: 36px; }
+    h2 { font-family: var(--font-display); font-size: clamp(20px, 3vw, 32px); margin-top: 10px; color: var(--text); }
+    .section-desc { color: var(--text-dim); margin-top: 10px; max-width: 600px; font-size: 15px; line-height: 1.6; }
+    .hero { min-height: 40vh; display: flex; flex-direction: column; justify-content: center; padding-top: 40px; }
+    h1.title { font-family: var(--font-display); font-size: clamp(28px, 5vw, 60px); color: var(--text); text-shadow: 3px 3px 0 var(--pink), 6px 6px 0 var(--cyan); }
+    .hero p.sub { font-size: 16px; color: var(--text-dim); max-width: 560px; margin-top: 15px; }
+    .post-form { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 14px; padding: 24px; margin-bottom: 30px; }
     .post-form .row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; margin-bottom: 14px; }
-    .post-form input, .post-form textarea { width: 100%; background: var(--bg-2); border: 1px solid var(--panel-border); color: var(--text); padding: 12px 14px; border-radius: 8px; font-family: var(--font-body); font-size: 14px; }
-    .post-form textarea { min-height: 90px; resize: vertical; margin-bottom: 14px; }
-    .btn { font-family: var(--font-mono); font-weight: 600; font-size: 14px; padding: 14px 26px; border-radius: 8px; cursor: pointer; background: var(--pink); color: #fff; border: none; }
+    .post-form input, .post-form textarea { width: 100%; background: var(--bg-2); border: 1px solid var(--panel-border); color: var(--text); padding: 12px 14px; border-radius: 8px; font-family: var(--font-body); font-size: 14px; outline: none; }
+    .post-form textarea { min-height: 80px; resize: vertical; margin-bottom: 14px; }
+    .btn { font-family: var(--font-mono); font-weight: 600; font-size: 14px; padding: 12px 24px; border-radius: 8px; cursor: pointer; background: var(--pink); color: #fff; border: none; transition: opacity .2s; }
+    .btn:hover { opacity: 0.9; }
     .feed { display: flex; flex-direction: column; gap: 14px; }
-    .post-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 20px 22px; }
-    .post-card .top { display: flex; justify-content: space-between; margin-bottom: 8px; font-family: var(--font-mono); font-size: 13px; }
+    .post-card { background: var(--panel); border: 1px solid var(--panel-border); border-radius: 12px; padding: 18px 20px; }
+    .post-card .top { display: flex; justify-content: space-between; margin-bottom: 6px; font-family: var(--font-mono); font-size: 13px; }
     .post-card .name { color: var(--cyan); font-weight: 600; }
     .post-card .game { color: var(--gold); }
-    .grid-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 20px; }
-    .card { background: var(--panel); border: 1px solid var(--panel-border); padding: 20px; border-radius: 12px; }
+    .grid-list { display: grid; grid-template-columns: repeat(auto-fit, minmax(260px, 1fr)); gap: 20px; }
+    .card { background: var(--panel); border: 1px solid var(--panel-border); padding: 20px; border-radius: 12px; display: flex; flex-direction: column; justify-content: space-between; }
+    .card h3 { font-size: 16px; font-weight: 600; margin-bottom: 8px; color: var(--text); }
   </style>
 </head>
 <body>
@@ -134,7 +136,7 @@
         container.innerHTML = TOP_GAMES.map(g => `
           <div class="card">
             <h3>${g.name}</h3>
-            <p style="color:var(--text-dim); margin-top:8px; font-size:14px;">${g.desc}</p>
+            <p style="color:var(--text-dim); font-size:14px;">${g.desc}</p>
           </div>
         `).join('');
       }
@@ -150,7 +152,7 @@
           container.innerHTML = videos.map(v => `
             <div class="card">
               <h3>${v.title}</h3>
-              <a href="${v.url}" target="_blank" style="color:var(--cyan); display:inline-block; margin-top:10px;">Ver en YouTube →</a>
+              <a href="${v.url}" target="_blank" style="color:var(--cyan); font-size:14px; margin-top:12px; display:inline-block;">Ver en YouTube →</a>
             </div>
           `).join('');
         } else {
@@ -175,7 +177,7 @@
                   <span class="name">${r.author}</span>
                   <span class="game">${r.game}</span>
                 </div>
-                <div>${r.comment}</div>
+                <div style="color:var(--text); font-size:14px;">${r.comment}</div>
               </div>
             `).join('');
           } else {
@@ -186,41 +188,40 @@
         feed.innerHTML = '<div style="color:var(--text-dim);">Conectando con la base de datos...</div>';
       }
     }
+document.addEventListener('DOMContentLoaded', () => {
+  loadTopGames();
+  loadTopVideos();
+  loadReviews();
 
-    document.addEventListener('DOMContentLoaded', () => {
-      loadTopGames();
-      loadTopVideos();
-      loadReviews();
+  const submitBtn = document.getElementById('submitPost');
+  if (submitBtn) {
+    submitBtn.addEventListener('click', async () => {
+      const author = document.getElementById('fName').value;
+      const game = document.getElementById('fGame').value;
+      const comment = document.getElementById('fBody').value;
 
-      const submitBtn = document.getElementById('submitPost');
-      if (submitBtn) {
-        submitBtn.addEventListener('click', async () => {
-          const author = document.getElementById('fName').value;
-          const game = document.getElementById('fGame').value;
-          const comment = document.getElementById('fBody').value;
+      if (!author || !game || !comment) {
+        alert('Por favor completá todos los campos.');
+        return;
+      }
 
-          if (!author || !game || !comment) {
-            alert('Por favor completá todos los campos.');
-            return;
-          }
+      const res = await fetch('/api/reviews', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ author, game, comment, rating: 5 })
+      });
 
-          const res = await fetch('/api/reviews', {
-            method: 'POST',
-            headers: { 'Content-Type': 'application/json' },
-            body: JSON.stringify({ author, game, comment, rating: 5 })
-          });
-
-          if (res.ok) {
-            document.getElementById('fName').value = '';
-            document.getElementById('fGame').value = '';
-            document.getElementById('fBody').value = '';
-            loadReviews();
-          } else {
-            alert('Error al guardar la reseña.');
-          }
-        });
+      if (res.ok) {
+        document.getElementById('fName').value = '';
+        document.getElementById('fGame').value = '';
+        document.getElementById('fBody').value = '';
+        loadReviews();
+      } else {
+        alert('Error al guardar la reseña.');
       }
     });
-  </script>
+  }
+});
+</script>
 </body>
 </html>

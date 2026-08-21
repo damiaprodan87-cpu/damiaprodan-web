@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://damiaprodan-oficial-rho.vercel.app/sitemap.xml

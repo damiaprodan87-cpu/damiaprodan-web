@@ -458,7 +458,7 @@ footer a:hover{color:var(--pink);}
     <p class="section-desc">Tus videos con más repercusión en YouTube. Click para verlos directo en YouTube.</p>
   </div>
   <div class="video-grid" id="topVideosGrid"></div>
-  <p class="edit-note">Se actualiza solo una vez que despliegues el backend de <code>api/top-videos.js</code> (instrucciones en <code>README-backend.md</code>). Hasta entonces, muestra una lista de ejemplo que podés editar a mano en <code>TOP_VIDEOS</code>.</p>
+  <p class="edit-note">Se actualiza sola cada 6 horas, tomando los videos con más vistas directo de tu canal de YouTube.</p>
 </section>
 
 <section id="ultimos-videos">
@@ -592,7 +592,8 @@ document.querySelectorAll('.snd').forEach(el=>{
 
 /* ---------- TWITCH EMBED (requiere dominio propio autorizado) ---------- */
 (function initTwitch(){
-const parentDomain = "damiaprodan-oficial-git-main-damia-prodan.vercel.app";
+  const parentDomain = "damiaprodan-oficial-rho.vercel.app"; // <-- reemplazar por tu dominio real, ej: "damiaprodan.com"
+  if(parentDomain !== "PARENT_DOMAIN"){
     const wrap = document.getElementById('liveEmbedWrap');
     wrap.innerHTML = `<iframe src="https://player.twitch.tv/?channel=damiaprodan&parent=${parentDomain}&muted=true" allowfullscreen></iframe>`;
   }
@@ -748,24 +749,19 @@ async function loadTopVideos(){
 }
 loadTopVideos();
 
-/* ---------- ÚLTIMOS VIDEOS (en vivo desde el feed RSS público de YouTube) ---------- */
-const YT_CHANNEL_ID = "UCpfI9tPbATkfMwW4IktVZUw"; // canal de DamiaProdan
+/* ---------- ÚLTIMOS VIDEOS (desde nuestro propio backend /api/top-videos, sin proxies de terceros) ---------- */
 async function loadLatestVideos(){
   const grid = document.getElementById('latestVideosGrid');
-  const rssUrl = `https://www.youtube.com/feeds/videos.xml?channel_id=${YT_CHANNEL_ID}`;
-  const proxyUrl = `https://api.rss2json.com/v1/api.json?rss_url=${encodeURIComponent(rssUrl)}`;
   try{
-    const res = await fetch(proxyUrl);
-    if(!res.ok) throw new Error('bad response');
+    const res = await fetch('/api/top-videos');
+    if(!res.ok) throw new Error('backend no disponible');
     const data = await res.json();
-    if(!data.items || data.items.length === 0) throw new Error('sin videos');
-    const items = data.items.slice(0, 12); // ya vienen del más nuevo al más viejo
-    grid.innerHTML = items.map(v => {
-      const thumb = (v.thumbnail) || '';
-      const date = new Date(v.pubDate).toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
+    if(!data.latest || data.latest.length === 0) throw new Error('sin videos');
+    grid.innerHTML = data.latest.map(v => {
+      const date = new Date(v.publishedAt).toLocaleDateString('es-AR', { day:'2-digit', month:'short', year:'numeric' });
       return `
-        <a class="video-card snd" href="${v.link}" target="_blank" rel="noopener">
-          <div class="video-thumb" style="background-image:url('${thumb}')"><span class="play">▶</span></div>
+        <a class="video-card snd" href="${v.url}" target="_blank" rel="noopener">
+          <div class="video-thumb" style="background-image:url('${v.thumb}')"><span class="play">▶</span></div>
           <div class="video-info">
             <h4>${escapeHtml(v.title)}</h4>
             <div class="meta"><span>${date}</span><span>YouTube ↗</span></div>
@@ -773,7 +769,7 @@ async function loadLatestVideos(){
         </a>`;
     }).join('');
   }catch(e){
-    grid.innerHTML = `<div class="video-error">No se pudo traer el feed en vivo ahora mismo (puede ser un límite del proxy gratuito). Mirá los últimos videos directo en <a href="https://www.youtube.com/@DamiaProdan" target="_blank" rel="noopener">YouTube</a>.</div>`;
+    grid.innerHTML = `<div class="video-error">No se pudo traer el feed ahora mismo. Mirá los últimos videos directo en <a href="https://www.youtube.com/@DamiaProdan" target="_blank" rel="noopener">YouTube</a>.</div>`;
   }
 }
 loadLatestVideos();

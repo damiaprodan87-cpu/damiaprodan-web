@@ -3,10 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>DamiaProdan | Streams, Juegos y Comunidad Oficial</title>
-  <meta name="description" content="Sitio oficial de DamiaProdan. Streams en vivo, clips de YouTube, ranking de juegos y un espacio para dejar tu reseña y opinar con la comunidad.">
+  <title>DamiaProdan | Streams en vivo, juegos y comunidad</title>
+  <meta name="description" content="Todo DamiaProdan en un solo lugar: streams en vivo de Twitch, últimos videos de YouTube, top de juegos jugados y una comunidad que opina y califica cada partida. Sumate al Discord y enterate de todo.">
+  <link rel="canonical" href="https://damiaprodan-oficial-rho.vercel.app/">
+  <meta name="robots" content="index, follow">
+  
+  <!-- Open Graph / Redes -->
+  <meta property="og:type" content="website">
+  <meta property="og:url" content="https://damiaprodan-oficial-rho.vercel.app/">
+  <meta property="og:title" content="DamiaProdan | Streams en vivo, juegos y comunidad">
+  <meta property="og:description" content="Streams de Twitch, clips de YouTube, ranking de juegos y un espacio abierto para la comunidad.">
+  
+  <!-- Google Fonts -->
   <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;600&display=swap" rel="stylesheet">
+  
   <style>
     :root {
       --bg: #0d0716;
@@ -92,7 +104,6 @@
       color: var(--cyan);
     }
 
-    /* BOTÓN DE AUDIO */
     .audio-btn {
       background: var(--panel);
       border: 1px solid var(--panel-border);
@@ -113,7 +124,7 @@
       color: var(--cyan);
     }
 
-    /* SECCIONES GENERALES */
+    /* CONTENEDORES Y SECCIONES */
     section {
       padding: 90px 5vw;
       position: relative;
@@ -148,7 +159,7 @@
       line-height: 1.6;
     }
 
-    /* HERO */
+    /* SECCIÓN HERO */
     .hero {
       min-height: 60vh;
       display: flex;
@@ -173,7 +184,25 @@
       line-height: 1.6;
     }
 
-    /* GRID DE TARJETAS */
+    /* REPRODUCTOR DE TWITCH */
+    .stream-container {
+      background: var(--panel);
+      border: 1px solid var(--panel-border);
+      border-radius: 16px;
+      overflow: hidden;
+      padding: 12px;
+      box-shadow: 0 10px 30px rgba(0,0,0,0.5);
+    }
+
+    .twitch-embed {
+      width: 100%;
+      aspect-ratio: 16/9;
+      background: #000;
+      border-radius: 10px;
+      border: none;
+    }
+
+    /* GRID / TARJETAS */
     .grid-list {
       display: grid;
       grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
@@ -304,6 +333,16 @@
       line-height: 1.5;
     }
 
+    footer {
+      text-align: center;
+      padding: 40px 0;
+      font-family: var(--font-mono);
+      font-size: 13px;
+      color: var(--text-dim);
+      border-top: 1px solid var(--panel-border);
+      margin-top: 60px;
+    }
+
     @media (max-width: 768px) {
       .post-form .row {
         grid-template-columns: 1fr;
@@ -320,6 +359,7 @@
   <nav>
     <div class="logo">DAMIA<span>PRODAN</span></div>
     <div class="nav-links">
+      <a href="#vivo">Vivo</a>
       <a href="#ranking">Top Juegos</a>
       <a href="#videos">Videos</a>
       <a href="#comunidad">Comunidad</a>
@@ -333,30 +373,42 @@
     <p class="sub">Streams en vivo, rankings de juegos, clips imperdibles y un espacio abierto para que la comunidad opine y debata.</p>
   </section>
 
+  <!-- TRANSMISIÓN EN VIVO (TWITCH) -->
+  <section id="vivo">
+    <div class="section-head">
+      <div class="section-num">01 — TRANSMISIÓN EN VIVO</div>
+      <h2>Directo de Twitch</h2>
+      <p class="section-desc">Mirá el stream actual directamente desde la web y unite a la charla en el canal.</p>
+    </div>
+    <div class="stream-container">
+      <iframe src="https://player.twitch.tv/?channel=damiaprodan&parent=damiaprodan-oficial-rho.vercel.app&parent=localhost" class="twitch-embed" allowfullscreen></iframe>
+    </div>
+  </section>
+
   <!-- TOP JUEGOS -->
   <section id="ranking">
     <div class="section-head">
-      <div class="section-num">01 — RANKING</div>
+      <div class="section-num">02 — RANKING</div>
       <h2>Top Juegos Jugados</h2>
       <p class="section-desc">Los títulos que protagonizan los directos y generan los mejores momentos en el canal.</p>
     </div>
     <div id="top-games-list" class="grid-list"></div>
   </section>
 
-  <!-- VIDEOS -->
+  <!-- TOP VIDEOS -->
   <section id="videos">
     <div class="section-head">
-      <div class="section-num">02 — VIDEOS</div>
+      <div class="section-num">03 — VIDEOS</div>
       <h2>Top Videos YouTube</h2>
-      <p class="section-desc">Reviví los mejores resúmenes, jugadas y momentos destacados.</p>
+      <p class="section-desc">Reviví los mejores resúmenes, jugadas y momentos destacados del canal.</p>
     </div>
     <div id="top-videos-list" class="grid-list"></div>
   </section>
 
-  <!-- COMUNIDAD -->
+  <!-- COMUNIDAD / RESEÑAS -->
   <section id="comunidad">
     <div class="section-head">
-      <div class="section-num">03 — COMUNIDAD</div>
+      <div class="section-num">04 — COMUNIDAD</div>
       <h2>Opiniones y Reseñas</h2>
       <p class="section-desc">Dejá tu comentario, recomendá un juego o contá qué te pareció el último stream.</p>
     </div>
@@ -373,9 +425,12 @@
     <div id="feed" class="feed"></div>
   </section>
 
-  <!-- LÓGICA Y SISTEMA DE AUDIO -->
+  <footer>
+    <p>&copy; 2026 DamiaProdan. Todos los derechos reservados.</p>
+  </footer>
+
+  <!-- SCRIPT Y LÓGICA -->
   <script>
-    // Sintetizador Web Audio API para efectos de sonido retro sin archivos externos
     let audioCtx = null;
     let soundEnabled = false;
 
@@ -412,7 +467,6 @@
       playBeep(600, 'triangle', 0.12);
     });
 
-    // DATOS DE JUEGOS
     const TOP_GAMES = [
       { name: "Counter-Strike 2", desc: "Tiros precisos, tensión en cada ronda y risas aseguradas con el chat." },
       { name: "GTA V / RP", desc: "Historias impredecibles, momentos bizarros y personajes inolvidables." },
@@ -434,14 +488,14 @@
       }
     }
 
-    // CARGA DE VIDEOS CON RESPALDO SEGURO
     async function loadTopVideos() {
       const container = document.getElementById('top-videos-list');
       if (!container) return;
 
       const backupVideos = [
         { title: "¡NUEVO STREAM! Jugando a full con la comunidad", url: "https://youtube.com/@damiaprodan" },
-        { title: "El mejor clip de la semana / Momentos divertidos", url: "https://youtube.com/@damiaprodan" }
+        { title: "El mejor clip de la semana / Momentos divertidos", url: "https://youtube.com/@damiaprodan" },
+        { title: "Partida épica y análisis en directo", url: "https://youtube.com/@damiaprodan" }
       ];
 
       try {
@@ -473,7 +527,6 @@
       }
     }
 
-    // CARGA DE RESEÑAS
     async function loadReviews() {
       const feed = document.getElementById('feed');
       if (!feed) return;
@@ -500,7 +553,6 @@
       }
     }
 
-    // INICIALIZACIÓN
     document.addEventListener('DOMContentLoaded', () => {
       loadTopGames();
       loadTopVideos();

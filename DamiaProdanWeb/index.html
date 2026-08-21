@@ -145,21 +145,34 @@
     async function loadTopVideos() {
       const container = document.getElementById('top-videos-list');
       if (!container) return;
+
+      const backupVideos = [
+        { title: "¡NUEVO STREAM! Jugando a full con la comunidad", url: "https://youtube.com/@damiaprodan" },
+        { title: "El mejor clip de la semana / Momentos divertidos", url: "https://youtube.com/@damiaprodan" }
+      ];
+
       try {
         const res = await fetch('/api/top-videos');
         if (res.ok) {
           const videos = await res.json();
-          container.innerHTML = videos.map(v => `
-            <div class="card">
-              <h3>${v.title}</h3>
-              <a href="${v.url}" target="_blank" style="color:var(--cyan); font-size:14px; margin-top:12px; display:inline-block;">Ver en YouTube →</a>
-            </div>
-          `).join('');
-        } else {
-          container.innerHTML = '<p style="color:var(--text-dim);">Próximamente más videos.</p>';
+          if (Array.isArray(videos) && videos.length > 0) {
+            container.innerHTML = videos.map(v => `
+              <div class="card">
+                <h3>${v.title}</h3>
+                <a href="${v.url}" target="_blank" style="color:var(--cyan); font-size:14px; margin-top:12px; display:inline-block;">Ver en YouTube →</a>
+              </div>
+            `).join('');
+            return;
+          }
         }
+        throw new Error();
       } catch (e) {
-        container.innerHTML = '<p style="color:var(--text-dim);">Conectando con YouTube...</p>';
+        container.innerHTML = backupVideos.map(v => `
+          <div class="card">
+            <h3>${v.title}</h3>
+            <a href="${v.url}" target="_blank" style="color:var(--cyan); font-size:14px; margin-top:12px; display:inline-block;">Ir al canal de YouTube →</a>
+          </div>
+        `).join('');
       }
     }
 
@@ -188,40 +201,41 @@
         feed.innerHTML = '<div style="color:var(--text-dim);">Conectando con la base de datos...</div>';
       }
     }
-document.addEventListener('DOMContentLoaded', () => {
-  loadTopGames();
-  loadTopVideos();
-  loadReviews();
 
-  const submitBtn = document.getElementById('submitPost');
-  if (submitBtn) {
-    submitBtn.addEventListener('click', async () => {
-      const author = document.getElementById('fName').value;
-      const game = document.getElementById('fGame').value;
-      const comment = document.getElementById('fBody').value;
+    document.addEventListener('DOMContentLoaded', () => {
+      loadTopGames();
+      loadTopVideos();
+      loadReviews();
 
-      if (!author || !game || !comment) {
-        alert('Por favor completá todos los campos.');
-        return;
-      }
+      const submitBtn = document.getElementById('submitPost');
+      if (submitBtn) {
+        submitBtn.addEventListener('click', async () => {
+          const author = document.getElementById('fName').value;
+          const game = document.getElementById('fGame').value;
+          const comment = document.getElementById('fBody').value;
 
-      const res = await fetch('/api/reviews', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ author, game, comment, rating: 5 })
-      });
+          if (!author || !game || !comment) {
+            alert('Por favor completá todos los campos.');
+            return;
+          }
 
-      if (res.ok) {
-        document.getElementById('fName').value = '';
-        document.getElementById('fGame').value = '';
-        document.getElementById('fBody').value = '';
-        loadReviews();
-      } else {
-        alert('Error al guardar la reseña.');
+          const res = await fetch('/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ author, game, comment, rating: 5 })
+          });
+
+          if (res.ok) {
+            document.getElementById('fName').value = '';
+            document.getElementById('fGame').value = '';
+            document.getElementById('fBody').value = '';
+            loadReviews();
+          } else {
+            alert('Error al guardar la reseña.');
+          }
+        });
       }
     });
-  }
-});
-</script>
+  </script>
 </body>
 </html>

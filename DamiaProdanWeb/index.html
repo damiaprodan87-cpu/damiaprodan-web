@@ -612,5 +612,35 @@
       }
     });
   </script>
+if (submitBtn) {
+        submitBtn.addEventListener('click', async () => {
+          playBeep(800, 'square', 0.1);
+          const author = document.getElementById('fName').value.trim();
+          const game = document.getElementById('fGame').value.trim();
+          const comment = document.getElementById('fBody').value.trim();
+
+          if (!author || !game || !comment) {
+            alert('Por favor completá todos los campos.');
+            return;
+          }
+
+          const res = await fetch('/api/reviews', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({ author, game, comment, rating: 5 })
+          });
+
+          if (res.ok) {
+            document.getElementById('fName').value = '';
+            document.getElementById('fGame').value = '';
+            document.getElementById('fBody').value = '';
+            loadReviews();
+          } else {
+            alert('Error al guardar la reseña.');
+          }
+        });
+      }
+    });
+  </script>
 </body>
 </html>

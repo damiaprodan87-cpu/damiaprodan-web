@@ -240,41 +240,29 @@ h2{
 .plat-card[data-p="discord"]{--accent:var(--discord);}
 .plat-card:hover{border-color:var(--accent);}
 
-/* COMMUNITY / POSTS */
-.post-form{
-  background:var(--panel);border:1px solid var(--panel-border);border-radius:14px;
-  padding:28px;margin-bottom:36px;
+/* DISCORD CHAT EMBEBIDO (reemplaza a la vieja sección de reseñas) */
+.discord-section { max-width: 700px; margin: 0 auto; }
+.discord-title { font-family: var(--font-display); color: var(--pink); font-size: 22px; margin-bottom: 8px; }
+.discord-sub { color: var(--text-dim); margin-bottom: 24px; font-family: var(--font-body); }
+.discord-crate-container {
+  border: 1px solid var(--panel-border);
+  border-radius: 12px;
+  overflow: hidden;
+  background: var(--panel);
 }
-.post-form .row{display:grid;grid-template-columns:1fr 1fr;gap:14px;margin-bottom:14px;}
-@media(max-width:640px){.post-form .row{grid-template-columns:1fr;}}
-.post-form input, .post-form textarea{
-  width:100%;background:var(--bg-2);border:1px solid var(--panel-border);color:var(--text);
-  padding:12px 14px;border-radius:8px;font-family:var(--font-body);font-size:14px;
-  transition:border-color .2s;
+.discord-cta { text-align: center; margin-top: 20px; }
+.discord-join-btn {
+  display: inline-block;
+  background: var(--pink);
+  color: #fff;
+  text-decoration: none;
+  border-radius: 8px;
+  padding: 10px 20px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  transition: opacity 0.2s;
 }
-.post-form input:focus, .post-form textarea:focus{outline:none;border-color:var(--cyan);}
-.post-form textarea{min-height:90px;resize:vertical;margin-bottom:14px;}
-.stars{display:flex;gap:6px;margin-bottom:18px;}
-.star{font-size:26px;cursor:pointer;color:#463465;transition:color .15s, transform .1s;}
-.star:hover, .star.active{color:var(--gold);}
-.star:active{transform:scale(1.2);}
-
-.feed{display:flex;flex-direction:column;gap:14px;}
-.post-card{
-  background:var(--panel);border:1px solid var(--panel-border);border-radius:12px;
-  padding:20px 22px;
-  animation:cardIn .4s ease;
-}
-@keyframes cardIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
-.post-card .top{display:flex;justify-content:space-between;align-items:center;margin-bottom:8px;flex-wrap:wrap;gap:8px;}
-.post-card .name{font-family:var(--font-mono);color:var(--cyan);font-size:14px;}
-.post-card .game{font-family:var(--font-mono);color:var(--gold);font-size:12px;}
-.post-card .stars-view{color:var(--gold);font-size:14px;letter-spacing:2px;}
-.post-card .body{color:var(--text-dim);font-size:14px;line-height:1.6;}
-.empty-state{
-  text-align:center;padding:40px 20px;color:var(--text-dim);font-family:var(--font-mono);font-size:13px;
-  border:1px dashed var(--panel-border);border-radius:12px;
-}
+.discord-join-btn:hover { opacity: 0.85; }
 
 /* DISCORD CTA */
 .discord-band{
@@ -372,7 +360,7 @@ footer a:hover{color:var(--pink);}
     <a href="#plataformas">Plataformas</a>
     <a href="#top-juegos">Top juegos</a>
     <a href="#ultimos-videos">Videos</a>
-    <a href="#juegos">Comunidad</a>
+    <a href="#resenas">Comunidad</a>
     <a href="#discord">Discord</a>
     <button class="sound-toggle" id="soundToggle"><span class="dot"></span> <span id="soundLabel">Sonido off</span></button>
   </div>
@@ -407,7 +395,7 @@ footer a:hover{color:var(--pink);}
       </div>
       <div class="live-card">
         <h3>¿Jugaste esto con nosotros? Contalo.</h3>
-        <p>Tu reseña define qué jugamos la próxima. Calificá, opiná y dejá tu marca en la comunidad. <a class="card-link" href="#juegos">Deja tu reseña en Juegos Jugados →</a></p>
+        <p>Sumate a la charla en el Discord y contanos qué te pareció. <a class="card-link" href="#resenas">Comentá en el Discord →</a></p>
       </div>
     </div>
   </div>
@@ -435,7 +423,7 @@ footer a:hover{color:var(--pink);}
     <a class="plat-card snd" data-p="x" href="https://x.com/XDamiaProdanX" target="_blank" rel="noopener">
       <span class="icon">✖️</span><h3>X</h3><p>Novedades y avisos de stream.</p><span class="go">Ir al canal →</span>
     </a>
-    <a class="plat-card snd" data-p="discord" href="https://discord.com/invite/53fBDceMDf" target="_blank" rel="noopener">
+    <a class="plat-card snd" data-p="discord" href="https://discord.gg/zqcp5umHQ" target="_blank" rel="noopener">
       <span class="icon">💬</span><h3>Discord</h3><p>La comunidad, todo el día.</p><span class="go">Unirme →</span>
     </a>
   </div>
@@ -458,7 +446,7 @@ footer a:hover{color:var(--pink);}
     <p class="section-desc">Tus videos con más repercusión en YouTube. Click para verlos directo en YouTube.</p>
   </div>
   <div class="video-grid" id="topVideosGrid"></div>
-  <p class="edit-note">Se actualiza sola cada 6 horas, tomando los videos con más vistas directo de tu canal de YouTube.</p>
+  <p class="edit-note">Se actualiza sola cada 12 horas, tomando los videos con más vistas de todo el historial de tu canal de YouTube.</p>
 </section>
 
 <section id="ultimos-videos">
@@ -472,38 +460,27 @@ footer a:hover{color:var(--pink);}
   </div>
 </section>
 
-<section id="juegos">
+<section id="resenas">
   <div class="section-head">
     <div class="section-num">06 — COMUNIDAD</div>
-    <h2>Juegos jugados: opiná y calificá</h2>
-    <p class="section-desc">Posteá qué te pareció algún juego que jugamos en stream. Queda visible para todos.</p>
+    <h2>Comentá en el Discord</h2>
+    <p class="section-desc">Sumate a la charla en vivo sobre lo que jugamos en stream. Necesitás cuenta de Discord para escribir, no para leer.</p>
   </div>
 
-  <div class="post-form">
-    <div class="row">
-      <input type="text" id="fName" placeholder="Tu nombre" maxlength="30">
-      <input type="text" id="fGame" placeholder="Juego (ej: Elden Ring)" maxlength="40">
+  <div class="discord-section">
+    <div id="discord-crate-container" class="discord-crate-container"></div>
+    <div class="discord-cta">
+      <a href="https://discord.gg/zqcp5umHQ" target="_blank" rel="noopener" class="discord-join-btn snd">
+        Unite al Discord →
+      </a>
     </div>
-    <textarea id="fBody" placeholder="Tu opinión sobre el juego / el stream..." maxlength="400"></textarea>
-    <div class="stars" id="starPicker">
-      <span class="star" data-v="1">★</span>
-      <span class="star" data-v="2">★</span>
-      <span class="star" data-v="3">★</span>
-      <span class="star" data-v="4">★</span>
-      <span class="star" data-v="5">★</span>
-    </div>
-    <button class="btn btn-primary snd" id="submitPost">Postear reseña</button>
-  </div>
-
-  <div class="feed" id="feed">
-    <div class="empty-state">Cargando reseñas...</div>
   </div>
 </section>
 
 <div class="discord-band" id="discord">
   <h2>Sumate al Discord</h2>
   <p>Charla en vivo, avisos de stream y la comunidad completa.</p>
-  <a class="btn btn-primary snd" href="https://discord.com/invite/53fBDceMDf" target="_blank" rel="noopener">💬 Entrar al Discord</a>
+  <a class="btn btn-primary snd" href="https://discord.gg/zqcp5umHQ" target="_blank" rel="noopener">💬 Entrar al Discord</a>
 </div>
 
 <footer>
@@ -514,12 +491,13 @@ footer a:hover{color:var(--pink);}
     <a href="https://kick.com/damiaprodan" target="_blank">Kick</a> ·
     <a href="https://trovo.live/s/DamiaProdan" target="_blank">Trovo</a> ·
     <a href="https://x.com/XDamiaProdanX" target="_blank">X</a> ·
-    <a href="https://discord.com/invite/53fBDceMDf" target="_blank">Discord</a>
+    <a href="https://discord.gg/zqcp5umHQ" target="_blank">Discord</a>
   </div>
 </footer>
 
 <div class="toast" id="toast"></div>
 
+<script src="https://cdn.jsdelivr.net/npm/@widgetbot/crate@3" async defer></script>
 <script>
 /* ---------- SONIDO (Web Audio API, sin archivos externos) ---------- */
 let actx = null;
@@ -599,93 +577,27 @@ document.querySelectorAll('.snd').forEach(el=>{
   }
 })();
 
-/* ---------- SISTEMA DE POSTEOS (persistente, compartido) ---------- */
-const feedEl = document.getElementById('feed');
-const starPicker = document.getElementById('starPicker');
-let selectedStars = 0;
-
-starPicker.querySelectorAll('.star').forEach(star=>{
-  star.addEventListener('click', ()=>{
-    selectedStars = parseInt(star.dataset.v);
-    starPicker.querySelectorAll('.star').forEach(s=>{
-      s.classList.toggle('active', parseInt(s.dataset.v) <= selectedStars);
-    });
-    playClick(1000);
-  });
-});
-
-function showToast(msg){
-  const t = document.getElementById('toast');
-  t.textContent = msg;
-  t.classList.add('show');
-  setTimeout(()=> t.classList.remove('show'), 2200);
-}
-
-function renderPosts(posts){
-  if(!posts || posts.length === 0){
-    feedEl.innerHTML = '<div class="empty-state">Todavía no hay reseñas. ¡Sé el primero en postear!</div>';
-    return;
-  }
-  feedEl.innerHTML = posts.slice().reverse().map(p => `
-    <div class="post-card">
-      <div class="top">
-        <span class="name">${escapeHtml(p.name)}</span>
-        <span class="game">${escapeHtml(p.game)}</span>
-        <span class="stars-view">${'★'.repeat(p.stars)}${'☆'.repeat(5-p.stars)}</span>
-      </div>
-      <div class="body">${escapeHtml(p.body)}</div>
-    </div>
-  `).join('');
-}
-
 function escapeHtml(str){
   const d = document.createElement('div');
   d.textContent = str;
   return d.innerHTML;
 }
 
-async function loadPosts(){
-  try{
-    const result = await window.storage.get('posts:list', true);
-    const posts = result ? JSON.parse(result.value) : [];
-    renderPosts(posts);
-    return posts;
-  }catch(e){
-    renderPosts([]);
-    return [];
-  }
-}
-
-document.getElementById('submitPost').addEventListener('click', async ()=>{
-  const name = document.getElementById('fName').value.trim() || 'Anónimo';
-  const game = document.getElementById('fGame').value.trim();
-  const body = document.getElementById('fBody').value.trim();
-
-  if(!game || !body || selectedStars === 0){
-    showToast('Completá juego, opinión y calificación ⭐');
-    return;
-  }
-
-  playClick(1200);
-
-  try{
-    const current = await loadPosts();
-    const newPost = { name, game, body, stars: selectedStars, ts: Date.now() };
-    const updated = [...current, newPost];
-    await window.storage.set('posts:list', JSON.stringify(updated), true);
-    renderPosts(updated);
-    document.getElementById('fName').value = '';
-    document.getElementById('fGame').value = '';
-    document.getElementById('fBody').value = '';
-    selectedStars = 0;
-    starPicker.querySelectorAll('.star').forEach(s=> s.classList.remove('active'));
-    showToast('¡Reseña posteada!');
-  }catch(e){
-    showToast('Error al postear, intentá de nuevo');
-  }
+/* ---------- CHAT DE DISCORD EMBEBIDO (WidgetBot Crate) ---------- */
+window.addEventListener('load', function () {
+  if (typeof Crate === 'undefined') return;
+  new Crate({
+    server: '762893460205338674',
+    channel: '877298683706740797',
+    shard: 'https://emerald.widgetbot.io',
+    location: '#discord-crate-container',
+    indicator: false,
+    notifications: false,
+    css: `
+      .container { height: 500px !important; }
+    `,
+  });
 });
-
-loadPosts();
 
 /* ---------- TOP JUEGOS (editable a mano) ---------- */
 const TOP_GAMES = [

@@ -8,11 +8,10 @@
 //   - latest: últimos videos subidos (orden cronológico)
 const CHANNEL_ID = "UCpfI9tPbATkfMwW4IktVZUw"; // canal de DamiaProdan
 const MAX_RESULTS = 6;
-// Cuántos videos recientes traer del canal para elegir el top real por vistas.
 // search.list con order=viewCount NO es confiable, así que en vez de eso
-// traemos la lista completa de "subidos" (uploads playlist) y ordenamos
-// nosotros mismos por vistas reales.
-const SCAN_LIMIT = 50;
+// traemos la lista COMPLETA de "subidos" (uploads playlist) del canal y
+// ordenamos nosotros mismos por vistas reales, para que el top sea
+// realmente el de más vistas de TODA la vida del canal.
 
 async function getUploadsPlaylistId(apiKey) {
   const url = `https://www.googleapis.com/youtube/v3/channels?key=${apiKey}&id=${CHANNEL_ID}&part=contentDetails`;
@@ -27,7 +26,10 @@ async function getUploadsPlaylistId(apiKey) {
 async function fetchAllVideoIds(apiKey, uploadsPlaylistId) {
   let videoIds = [];
   let pageToken = "";
-  while (videoIds.length < SCAN_LIMIT) {
+  // Recorre TODAS las páginas de la playlist de subidos (todo el historial
+  // del canal), no solo las primeras, para que el ranking de "más vistos"
+  // sea realmente de todo el tiempo.
+  while (true) {
     const url = `https://www.googleapis.com/youtube/v3/playlistItems?key=${apiKey}&playlistId=${uploadsPlaylistId}&part=contentDetails&maxResults=50&pageToken=${pageToken}`;
     const res = await fetch(url);
     const data = await res.json();
@@ -37,7 +39,7 @@ async function fetchAllVideoIds(apiKey, uploadsPlaylistId) {
     pageToken = data.nextPageToken;
     if (!pageToken) break;
   }
-  return videoIds.slice(0, SCAN_LIMIT);
+  return videoIds;
 }
 
 async function fetchStatsForIds(apiKey, videoIds) {
@@ -77,8 +79,9 @@ export default async function handler(req, res) {
       .sort((a, b) => new Date(b.publishedAt) - new Date(a.publishedAt))
       .slice(0, MAX_RESULTS);
 
-    // Cachear la respuesta 6 horas para no gastar cuota de la API de más
-    res.setHeader("Cache-Control", "s-maxage=21600, stale-while-revalidate");
+    // Cachear la respuesta 12 horas: ahora escaneamos el canal completo,
+    // así que conviene cachear más tiempo para no gastar cuota de más.
+    res.setHeader("Cache-Control", "s-maxage=43200, stale-while-revalidate");
     return res.status(200).json({ videos, latest });
   } catch (err) {
     return res.status(500).json({ error: "Error consultando YouTube: " + err.message });

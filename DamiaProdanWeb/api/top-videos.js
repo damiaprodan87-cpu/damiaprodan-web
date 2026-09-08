@@ -42,16 +42,34 @@ async function fetchAllVideoIds(apiKey, uploadsPlaylistId) {
   return videoIds;
 }
 
+// Convierte una duración ISO 8601 de YouTube (ej: "PT45S", "PT4M13S", "PT1H2M3S")
+// a segundos totales.
+function parseDurationToSeconds(iso) {
+  const match = /^PT(?:(\d+)H)?(?:(\d+)M)?(?:(\d+)S)?$/.exec(iso || "");
+  if (!match) return 0;
+  const hours = parseInt(match[1] || "0", 10);
+  const minutes = parseInt(match[2] || "0", 10);
+  const seconds = parseInt(match[3] || "0", 10);
+  return hours * 3600 + minutes * 60 + seconds;
+}
+
+// Un video se considera Short si dura 60 segundos o menos (el límite que usa YouTube).
+const SHORTS_MAX_SECONDS = 60;
+
 async function fetchStatsForIds(apiKey, videoIds) {
   const results = [];
   // La API de videos.list acepta hasta 50 IDs por llamada
   for (let i = 0; i < videoIds.length; i += 50) {
     const chunk = videoIds.slice(i, i + 50);
-    const url = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${chunk.join(",")}&part=statistics,snippet`;
+    const url = `https://www.googleapis.com/youtube/v3/videos?key=${apiKey}&id=${chunk.join(",")}&part=statistics,snippet,contentDetails`;
     const res = await fetch(url);
     const data = await res.json();
     if (data.error) throw new Error(data.error.message);
     (data.items || []).forEach(item => {
+      const durationSeconds = parseDurationToSeconds(item.contentDetails?.duration);
+      // Descartamos los Shorts (60s o menos) para que el top y los últimos
+      // videos muestren solo contenido normal del canal.
+      if (durationSeconds <= SHORTS_MAX_SECONDS) return;
       results.push({
         title: item.snippet.title,
         url: `https://www.youtube.com/watch?v=${item.id}`,
